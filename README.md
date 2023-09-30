@@ -1,2 +1,2 @@
 # utils
-This is the util of cheryx
+This is the util of cheryx.
