@@ -1,6 +1,22 @@
 import { APIService, handleApiError } from '@cheryx2020/api-service';
 import publicIp from 'public-ip';
 
+const POST_ITEM_TYPE = {
+    TITLE: 'title',
+    BIG_HEADER: 'big-header',
+    MEDIUM_HEADER: 'medium-header',
+    SMALL_HEADER: 'small-header',
+    PARAGRAPH: 'paragraph',
+    RELATED_TOPIC: 'related-topic',
+    SUBCRIBE_ME: 'subcribe-me',
+    IMAGE: 'image',
+    BUY_ME_A_COFFEE: 'buy-me-a-coffee',
+    VIDEO: 'video',
+    ADS: 'ads',
+    PATTERN: 'pattern',
+    PATTERN_PREVIEW: 'pattern_preview',
+    GROUP: 'group'
+};
 /**
  * Get post description from content. Currently, it get the first paragraph of content
  */
@@ -160,4 +176,4 @@ const transformImageSrc = imgUrl => {
   return result;
 };
 
-export { SLACK_CHANNELS, deleteFile, getDescriptionFromContent, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };

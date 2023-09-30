@@ -1,6 +1,6 @@
 import { APIService, handleApiError } from "@cheryx2020/api-service";
 import publicIp from 'public-ip';
-export { getDescriptionFromContent, isBigFile } from "./src/data";
+export { getDescriptionFromContent, isBigFile, POST_ITEM_TYPE } from "./src/data";
 
 
 export const removeAccents = str => {
