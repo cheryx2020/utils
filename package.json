@@ -1,0 +1,31 @@
+{
+  "name": "@cheryx2020/utils",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "patch": "npm version patch --force",
+    "rollup": "rollup -c",
+    "pup": "yarn rollup && yarn patch && yarn pack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheryx2020/utils.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Vinh Nguyen",
+  "license": "MIT",
+  "dependencies": {
+    "@cheryx2020/api-service": "^1.0.8",
+    "rollup": "^3.29.4"
+  },
+  "bugs": {
+    "url": "https://github.com/cheryx2020/utils/issues"
+  },
+  "homepage": "https://github.com/cheryx2020/utils#readme",
+  "devDependencies": {}
+}

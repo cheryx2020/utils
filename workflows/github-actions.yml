@@ -1,0 +1,6 @@
+name: Publish
+run-name: Publish
+on: [push]
+jobs:
+  publish:
+    uses: cheryx2020/api-service/.github/workflows/github-actions.yml@main
