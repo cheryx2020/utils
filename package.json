@@ -21,11 +21,13 @@
   "license": "MIT",
   "dependencies": {
     "@cheryx2020/api-service": "^1.0.8",
-    "rollup": "^3.29.4"
+    "public-ip": "^5.0.0"
   },
   "bugs": {
     "url": "https://github.com/cheryx2020/utils/issues"
   },
   "homepage": "https://github.com/cheryx2020/utils#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "rollup": "^3.29.4"
+  }
 }

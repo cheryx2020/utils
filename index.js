@@ -1,5 +1,5 @@
 import { APIService, handleApiError } from "@cheryx2020/api-service";
-
+import publicIp from 'public-ip';
 
 ﻿
 export const removeAccents = str => {
@@ -89,4 +89,22 @@ export const deleteFile = (filePath) => {
       handleApiError(err);
     });
   });
+}
+
+export const SLACK_CHANNELS = {
+  FREE_CRAFTPATTERNS: 'FREE_CRAFTPATTERNS'
+}
+export const sendSlackMessage = async ({channel = 'FREE_CRAFTPATTERNS', message = 'Text message'}) => {
+  let ip = '', _message = message || '';
+  try {
+      ip = await publicIp.v4();
+  } catch(e) {
+      console.log(e);
+  };
+  _message += `\\nIP Address: *${ip}*&ip=${ip}`;
+  return APIService.get(`send-message-slack?channel=${channel}&message=${_message}`).then(() => {
+      console.log('send-message-slack success')
+  }).catch(err => {
+      console.log('send-message-slack error')
+  })
 }
