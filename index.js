@@ -1,7 +1,8 @@
 import { APIService, handleApiError } from "@cheryx2020/api-service";
 import publicIp from 'public-ip';
+export { getDescriptionFromContent, isBigFile } from "./src/data";
 
-﻿
+
 export const removeAccents = str => {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
@@ -16,9 +17,9 @@ export const removeAccents = str => {
     "uùủũúụưừửữứự",
     "UÙỦŨÚỤƯỪỬỮỨỰ",
     "yỳỷỹýỵ",
-    "YỲỶỸÝỴ"    
+    "YỲỶỸÝỴ"
   ];
-  for (var i=0; i<AccentsMap.length; i++) {
+  for (var i = 0; i < AccentsMap.length; i++) {
     var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
     var char = AccentsMap[i][0];
     str = str.replace(re, char);
@@ -59,7 +60,7 @@ export const uploadFile = (file, localPath, hideAlert, fileName, requestAbsolute
   }
   return new Promise((resolve, reject) => {
     APIService.post('upload-file', bodyFormData, {
-      headers: {'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' }
     }).then(res => {
       console.log(res);
       // Handle upload file success
@@ -94,37 +95,37 @@ export const deleteFile = (filePath) => {
 export const SLACK_CHANNELS = {
   FREE_CRAFTPATTERNS: 'FREE_CRAFTPATTERNS'
 }
-export const sendSlackMessage = async ({channel = 'FREE_CRAFTPATTERNS', message = 'Text message'}) => {
+export const sendSlackMessage = async ({ channel = 'FREE_CRAFTPATTERNS', message = 'Text message' }) => {
   let ip = '', _message = message || '';
   try {
-      ip = await publicIp.v4();
-  } catch(e) {
-      console.log(e);
+    ip = await publicIp.v4();
+  } catch (e) {
+    console.log(e);
   };
   _message += `\\nIP Address: *${ip}*&ip=${ip}`;
   return APIService.get(`send-message-slack?channel=${channel}&message=${_message}`).then(() => {
-      console.log('send-message-slack success')
+    console.log('send-message-slack success')
   }).catch(err => {
-      console.log('send-message-slack error')
+    console.log('send-message-slack error')
   })
 }
 
 export const verifyToken = () => {
   return new Promise((resolve, reject) => {
-      APIService.get('user').then(res => {
-          resolve({verified: true, userInfo: res.data })
-      }).catch(e => {
-          resolve({verified: false})
-      })
+    APIService.get('user').then(res => {
+      resolve({ verified: true, userInfo: res.data })
+    }).catch(e => {
+      resolve({ verified: false })
+    })
   });
 }
 
 export const transformImageSrc = imgUrl => {
   let result = imgUrl;
   try {
-      result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl
-  } catch(e) {
-      console.log(e);
+    result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl
+  } catch (e) {
+    console.log(e);
   }
   return result;
 }

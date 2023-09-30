@@ -1,6 +1,39 @@
 import { APIService, handleApiError } from '@cheryx2020/api-service';
 import publicIp from 'public-ip';
 
+/**
+ * Get post description from content. Currently, it get the first paragraph of content
+ */
+const getDescriptionFromContent = (content) => {
+    let result = '', data = [];
+    if (typeof content === 'string') {
+      data = JSON.parse(content);
+    }
+    if (Array.isArray(content)) {
+      data = content;
+    }
+    if (data.length > 0) {
+      const firstParagraphItem = Array.isArray(data) ? data.find(item => item.type === POST_ITEM_TYPE.PARAGRAPH) : '';
+      if (typeof firstParagraphItem === 'object') {
+        result = firstParagraphItem.text;
+      }
+    }
+    return result;
+  };
+  
+  /**
+   * Check file size is bigger than size
+   * @param {*} file file object
+   * @param {*} size default is 500000 (value: 500000 for 500KB)
+   */
+  const isBigFile = (file, size = 500000) => {
+    let result = false;
+    if (file && file.size > 500000) {
+      result = true;
+    }
+    return result;
+  };
+
 const removeAccents = str => {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
@@ -15,9 +48,9 @@ const removeAccents = str => {
     "uùủũúụưừửữứự",
     "UÙỦŨÚỤƯỪỬỮỨỰ",
     "yỳỷỹýỵ",
-    "YỲỶỸÝỴ"    
+    "YỲỶỸÝỴ"
   ];
-  for (var i=0; i<AccentsMap.length; i++) {
+  for (var i = 0; i < AccentsMap.length; i++) {
     var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
     var char = AccentsMap[i][0];
     str = str.replace(re, char);
@@ -58,7 +91,7 @@ const uploadFile = (file, localPath, hideAlert, fileName, requestAbsoluteUrlResp
   }
   return new Promise((resolve, reject) => {
     APIService.post('upload-file', bodyFormData, {
-      headers: {'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' }
     }).then(res => {
       console.log(res);
       // Handle upload file success
@@ -93,38 +126,38 @@ const deleteFile = (filePath) => {
 const SLACK_CHANNELS = {
   FREE_CRAFTPATTERNS: 'FREE_CRAFTPATTERNS'
 };
-const sendSlackMessage = async ({channel = 'FREE_CRAFTPATTERNS', message = 'Text message'}) => {
+const sendSlackMessage = async ({ channel = 'FREE_CRAFTPATTERNS', message = 'Text message' }) => {
   let ip = '', _message = message || '';
   try {
-      ip = await publicIp.v4();
-  } catch(e) {
-      console.log(e);
+    ip = await publicIp.v4();
+  } catch (e) {
+    console.log(e);
   }  _message += `\\nIP Address: *${ip}*&ip=${ip}`;
   return APIService.get(`send-message-slack?channel=${channel}&message=${_message}`).then(() => {
-      console.log('send-message-slack success');
+    console.log('send-message-slack success');
   }).catch(err => {
-      console.log('send-message-slack error');
+    console.log('send-message-slack error');
   })
 };
 
 const verifyToken = () => {
   return new Promise((resolve, reject) => {
-      APIService.get('user').then(res => {
-          resolve({verified: true, userInfo: res.data });
-      }).catch(e => {
-          resolve({verified: false});
-      });
+    APIService.get('user').then(res => {
+      resolve({ verified: true, userInfo: res.data });
+    }).catch(e => {
+      resolve({ verified: false });
+    });
   });
 };
 
 const transformImageSrc = imgUrl => {
   let result = imgUrl;
   try {
-      result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl;
-  } catch(e) {
-      console.log(e);
+    result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl;
+  } catch (e) {
+    console.log(e);
   }
   return result;
 };
 
-export { SLACK_CHANNELS, deleteFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+export { SLACK_CHANNELS, deleteFile, getDescriptionFromContent, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
