@@ -108,3 +108,23 @@ export const sendSlackMessage = async ({channel = 'FREE_CRAFTPATTERNS', message 
       console.log('send-message-slack error')
   })
 }
+
+export const verifyToken = () => {
+  return new Promise((resolve, reject) => {
+      APIService.get('user').then(res => {
+          resolve({verified: true, userInfo: res.data })
+      }).catch(e => {
+          resolve({verified: false})
+      })
+  });
+}
+
+export const transformImageSrc = imgUrl => {
+  let result = imgUrl;
+  try {
+      result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl
+  } catch(e) {
+      console.log(e);
+  }
+  return result;
+}

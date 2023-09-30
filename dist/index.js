@@ -107,4 +107,24 @@ const sendSlackMessage = async ({channel = 'FREE_CRAFTPATTERNS', message = 'Text
   })
 };
 
-export { SLACK_CHANNELS, deleteFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, uploadFile };
+const verifyToken = () => {
+  return new Promise((resolve, reject) => {
+      APIService.get('user').then(res => {
+          resolve({verified: true, userInfo: res.data });
+      }).catch(e => {
+          resolve({verified: false});
+      });
+  });
+};
+
+const transformImageSrc = imgUrl => {
+  let result = imgUrl;
+  try {
+      result = imgUrl.includes('//') && !imgUrl.includes('https://') ? `https:` + imgUrl : imgUrl;
+  } catch(e) {
+      console.log(e);
+  }
+  return result;
+};
+
+export { SLACK_CHANNELS, deleteFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
