@@ -1,54 +1,54 @@
-import { APIService, handleApiError } from '@cheryx2020/api-service';
+import { APIService, handleApiError, makeQueryParamsFromObject } from '@cheryx2020/api-service';
 import publicIp from 'public-ip';
 
 const POST_ITEM_TYPE = {
-    TITLE: 'title',
-    BIG_HEADER: 'big-header',
-    MEDIUM_HEADER: 'medium-header',
-    SMALL_HEADER: 'small-header',
-    PARAGRAPH: 'paragraph',
-    RELATED_TOPIC: 'related-topic',
-    SUBCRIBE_ME: 'subcribe-me',
-    IMAGE: 'image',
-    BUY_ME_A_COFFEE: 'buy-me-a-coffee',
-    VIDEO: 'video',
-    ADS: 'ads',
-    PATTERN: 'pattern',
-    PATTERN_PREVIEW: 'pattern_preview',
-    GROUP: 'group'
+  TITLE: 'title',
+  BIG_HEADER: 'big-header',
+  MEDIUM_HEADER: 'medium-header',
+  SMALL_HEADER: 'small-header',
+  PARAGRAPH: 'paragraph',
+  RELATED_TOPIC: 'related-topic',
+  SUBCRIBE_ME: 'subcribe-me',
+  IMAGE: 'image',
+  BUY_ME_A_COFFEE: 'buy-me-a-coffee',
+  VIDEO: 'video',
+  ADS: 'ads',
+  PATTERN: 'pattern',
+  PATTERN_PREVIEW: 'pattern_preview',
+  GROUP: 'group'
 };
 /**
  * Get post description from content. Currently, it get the first paragraph of content
  */
 const getDescriptionFromContent = (content) => {
-    let result = '', data = [];
-    if (typeof content === 'string') {
-      data = JSON.parse(content);
+  let result = '', data = [];
+  if (typeof content === 'string') {
+    data = JSON.parse(content);
+  }
+  if (Array.isArray(content)) {
+    data = content;
+  }
+  if (data.length > 0) {
+    const firstParagraphItem = Array.isArray(data) ? data.find(item => item.type === POST_ITEM_TYPE.PARAGRAPH) : '';
+    if (typeof firstParagraphItem === 'object') {
+      result = firstParagraphItem.text;
     }
-    if (Array.isArray(content)) {
-      data = content;
-    }
-    if (data.length > 0) {
-      const firstParagraphItem = Array.isArray(data) ? data.find(item => item.type === POST_ITEM_TYPE.PARAGRAPH) : '';
-      if (typeof firstParagraphItem === 'object') {
-        result = firstParagraphItem.text;
-      }
-    }
-    return result;
-  };
-  
-  /**
-   * Check file size is bigger than size
-   * @param {*} file file object
-   * @param {*} size default is 500000 (value: 500000 for 500KB)
-   */
-  const isBigFile = (file, size = 500000) => {
-    let result = false;
-    if (file && file.size > 500000) {
-      result = true;
-    }
-    return result;
-  };
+  }
+  return result;
+};
+
+/**
+ * Check file size is bigger than size
+ * @param {*} file file object
+ * @param {*} size default is 500000 (value: 500000 for 500KB)
+ */
+const isBigFile = (file, size = 500000) => {
+  let result = false;
+  if (file && file.size > 500000) {
+    result = true;
+  }
+  return result;
+};
 
 const removeAccents = str => {
   var AccentsMap = [
@@ -176,4 +176,16 @@ const transformImageSrc = imgUrl => {
   return result;
 };
 
-export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+const getListTips = (params = {}) => {
+  return new Promise(async (resolve, reject) => {
+    await APIService.get(`list-post${makeQueryParamsFromObject(params)}`).then(res => {
+      if (res && res.data && res.data.data && res.data.data) {
+        resolve(res.data.data.filter(item => item.id != 'tu-hoc-dan-co-ban').map(item => { return { ...item, imgUrl: item.imgUrl || '/images/tips.png' } }));
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getListTips, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };

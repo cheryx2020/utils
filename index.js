@@ -1,4 +1,4 @@
-import { APIService, handleApiError } from "@cheryx2020/api-service";
+import { APIService, handleApiError, makeQueryParamsFromObject } from "@cheryx2020/api-service";
 import publicIp from 'public-ip';
 export { getDescriptionFromContent, isBigFile, POST_ITEM_TYPE } from "./src/data";
 
@@ -128,4 +128,16 @@ export const transformImageSrc = imgUrl => {
     console.log(e);
   }
   return result;
+}
+
+export const getListTips = (params = {}) => {
+  return new Promise(async (resolve, reject) => {
+    await APIService.get(`list-post${makeQueryParamsFromObject(params)}`).then(res => {
+      if (res && res.data && res.data.data && res.data.data) {
+        resolve(res.data.data.filter(item => item.id != 'tu-hoc-dan-co-ban').map(item => { return { ...item, imgUrl: item.imgUrl || '/images/tips.png' } }));
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
 }
