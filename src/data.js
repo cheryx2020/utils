@@ -26,7 +26,7 @@ export const getDescriptionFromContent = (content) => {
     data = content;
   }
   if (data.length > 0) {
-    const firstParagraphItem = Array.isArray(data) ? data.find(item => item.type === POST_ITEM_TYPE.PARAGRAPH) : '';
+    const firstParagraphItem = Array.isArray(data) ? data.find(item => item.type === "paragraph") : '';
     if (typeof firstParagraphItem === 'object') {
       result = firstParagraphItem.text;
     }
@@ -41,7 +41,7 @@ export const getDescriptionFromContent = (content) => {
  */
 export const isBigFile = (file, size = 500000) => {
   let result = false;
-  if (file && file.size > 500000) {
+  if (file && file.size > size) {
     result = true;
   }
   return result;
