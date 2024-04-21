@@ -188,4 +188,16 @@ const getListTips = (params = {}) => {
   });
 };
 
-export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getListTips, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+const getPageConfig = () => {
+  return new Promise(async (resolve, reject) => {
+    await APIService.get(`page`).then(res => {
+      if (res && res.data && res.data.content) {
+        resolve(res.data.content);
+      }
+    }).catch(err => {
+      reject(err);
+    });
+  });
+};
+
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getListTips, getPageConfig, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
