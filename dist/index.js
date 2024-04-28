@@ -50,6 +50,20 @@ const isBigFile = (file, size = 500000) => {
   return result;
 };
 
+const getDomain = () => {
+  const pageUrl = process.env.NEXT_PUBLIC_pageUrl;
+  let result = "";
+  let schema = "https://";
+  if (pageUrl) {
+    if (pageUrl.includes(schema)) {
+      result = pageUrl.split(schema)[1].trim();
+    } else {
+      result = pageUrl.split("http://")[1].trim();
+    }
+  }
+  return result;
+};
+
 const removeAccents = str => {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
@@ -200,4 +214,4 @@ const getPageConfig = (params = {}) => {
   });
 };
 
-export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getListTips, getPageConfig, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getDomain, getListTips, getPageConfig, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
