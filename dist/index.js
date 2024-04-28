@@ -203,10 +203,16 @@ const getListTips = (params = {}) => {
 };
 
 const getPageConfig = (params = {}) => {
+  const _params = {...params};
+  if (!_params.domain) {
+    _params.domain = getDomain();
+  }
   return new Promise(async (resolve, reject) => {
     await APIService.get(`page${makeQueryParamsFromObject(params)}`).then(res => {
       if (res && res.data && res.data.content) {
         resolve(res.data.content);
+      } else {
+        resolve("[]");
       }
     }).catch(err => {
       reject(err);
