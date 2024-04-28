@@ -142,9 +142,9 @@ export const getListTips = (params = {}) => {
   });
 }
 
-export const getPageConfig = () => {
+export const getPageConfig = (params = {}) => {
   return new Promise(async (resolve, reject) => {
-    await APIService.get(`page`).then(res => {
+    await APIService.get(`page${makeQueryParamsFromObject(params)}`).then(res => {
       if (res && res.data && res.data.content) {
         resolve(res.data.content);
       }
