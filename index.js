@@ -149,7 +149,7 @@ export const getPageConfig = (params = {}) => {
     _params.domain = getDomain();
   }
   return new Promise(async (resolve, reject) => {
-    await APIService.get(`page${makeQueryParamsFromObject(params)}`).then(res => {
+    await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(res => {
       if (res && res.data && res.data.content) {
         resolve(res.data.content);
       } else {
