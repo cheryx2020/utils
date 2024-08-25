@@ -1,7 +1,7 @@
 import { APIService, handleApiError, makeQueryParamsFromObject } from "@cheryx2020/api-service";
 import publicIp from 'public-ip';
 import { getDomain } from "./src/data";
-export { getDescriptionFromContent, isBigFile, POST_ITEM_TYPE, getDomain } from "./src/data";
+export { getDescriptionFromContent, isBigFile, POST_ITEM_TYPE, getDomain, getValueObjectByPath } from "./src/data";
 
 
 export const removeAccents = str => {

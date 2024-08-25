@@ -64,6 +64,11 @@ const getDomain = () => {
   return result;
 };
 
+const getValueObjectByPath = (object, path, defaultValue) => {
+  const pathArray = Array.isArray(path) ? path : path.split('.').filter(key => key);
+  return pathArray.reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : defaultValue, object);
+};
+
 const removeAccents = str => {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
@@ -220,4 +225,4 @@ const getPageConfig = (params = {}) => {
   });
 };
 
-export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getDomain, getListTips, getPageConfig, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getDomain, getListTips, getPageConfig, getValueObjectByPath, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
