@@ -60,3 +60,8 @@ export const getDomain = () => {
   }
   return result;
 }
+
+export const getValueObjectByPath = (object, path, defaultValue) => {
+  const pathArray = Array.isArray(path) ? path : path.split('.').filter(key => key);
+  return pathArray.reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : defaultValue, object);
+}

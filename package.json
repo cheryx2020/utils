@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "patch": "npm version patch --force",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "rollup": "rollup -c",
     "pup": "yarn rollup && yarn patch && yarn pack"
   },
@@ -28,6 +29,11 @@
   },
   "homepage": "https://github.com/cheryx2020/utils#readme",
   "devDependencies": {
+    "jest": "^29.7.0",
     "rollup": "^3.29.4"
+  },
+  "jest": {
+    "transform": {}
   }
+
 }
