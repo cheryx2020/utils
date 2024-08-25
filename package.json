@@ -1,6 +1,6 @@
 {
   "name": "@cheryx2020/utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "patch": "npm version patch --force",
@@ -35,5 +35,4 @@
   "jest": {
     "transform": {}
   }
-
 }
