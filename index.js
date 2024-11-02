@@ -143,6 +143,15 @@ export const getListTips = (params = {}) => {
   });
 }
 
+const parseJson = (data) => {
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
 export const getPageConfig = (params = {}) => {
   const _params = {...params};
   if (!_params.domain) {
@@ -150,10 +159,17 @@ export const getPageConfig = (params = {}) => {
   }
   return new Promise(async (resolve, reject) => {
     await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(res => {
-      if (res && res.data && res.data.content) {
-        resolve(res.data.content);
+      if (res && res.data) {
+        const keys = ['layout', 'content', 'seo'];
+        let parsedData = {};
+        
+        keys.forEach(key => {
+          parsedData[key] = parseJson(res.data[key]) || (key === 'content' ? [] : {});
+        });
+        
+        resolve(parsedData);
       } else {
-        resolve("[]");
+        resolve({});
       }
     }).catch(err => {
       reject(err);
