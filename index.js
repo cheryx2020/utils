@@ -160,6 +160,10 @@ export const getPageConfig = (params = {}) => {
   return new Promise(async (resolve, reject) => {
     await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(res => {
       if (res && res.data) {
+        if (!_params.name) {
+          // This is the case get list page name
+          resolve(res.data);
+        }
         const keys = ['layout', 'content', 'seo'];
         let parsedData = {};
         
