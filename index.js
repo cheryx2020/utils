@@ -158,18 +158,33 @@ export const getPageConfig = (params = {}) => {
     _params.domain = getDomain();
   }
   return new Promise(async (resolve, reject) => {
-    await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(res => {
+    await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(async res => {
       if (res && res.data) {
         if (!_params.name) {
           // This is the case get list page name
           resolve(res.data);
         }
         const keys = ['layout', 'content', 'seo'];
-        let parsedData = {};
+        let parsedData = { name: res.data.name };
         
         keys.forEach(key => {
           parsedData[key] = parseJson(res.data[key]) || (key === 'content' ? [] : {});
         });
+
+        if (Array.isArray(parsedData.content)) {
+          const length = parsedData.content.length;
+          for (let i = 0; i < length; i++) {
+            const content = parsedData.content[i];
+            if (content.api) {
+              try {
+                const contentDataRes = await APIService.get(content.api);
+                content[content.api] = contentDataRes.data.data;
+              } catch(e) {
+                console.log(e);
+              }
+            }
+          }
+        }
         
         resolve(parsedData);
       } else {
