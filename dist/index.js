@@ -242,7 +242,7 @@ const getPageConfig = (params = {}) => {
             if (content.api) {
               try {
                 const contentDataRes = await APIService.get(content.api);
-                content[content.api] = contentDataRes.data.data;
+                content[content.api] = contentDataRes.data.data ??  contentDataRes.data ?? null;
               } catch(e) {
                 console.log(e);
               }
