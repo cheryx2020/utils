@@ -180,7 +180,7 @@ const verifyToken = () => {
     APIService.get('user').then(res => {
       resolve({ verified: true, userInfo: res.data });
     }).catch(e => {
-      resolve({ verified: e.code !== "ERR_NETWORK" && e.response.status == 401 });
+      resolve({ verified: !(e.response && e.response.status == 401) });
     });
   });
 };
