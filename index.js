@@ -153,20 +153,21 @@ const parseJson = (data) => {
 };
 
 export const getPageConfig = (params = {}) => {
-  const _params = {...params};
+  const _params = { ...params };
   if (!_params.domain) {
     _params.domain = getDomain();
   }
   return new Promise(async (resolve, reject) => {
-    await APIService.get(`page${makeQueryParamsFromObject(_params)}`).then(async res => {
+    try {
+      const res = await APIService.get(`page${makeQueryParamsFromObject(_params)}`);
       if (res && res.data) {
         if (!_params.name) {
           // This is the case get list page name
           resolve(res.data);
         }
-        const keys = ['layout', 'content', 'seo'];
+        const keys = ['layout', 'content', 'seo', 'theme'];
         let parsedData = { name: res.data.name };
-        
+
         keys.forEach(key => {
           parsedData[key] = parseJson(res.data[key]) || (key === 'content' ? [] : {});
         });
@@ -178,20 +179,20 @@ export const getPageConfig = (params = {}) => {
             if (content.api) {
               try {
                 const contentDataRes = await APIService.get(content.api);
-                content[content.api] = contentDataRes.data.data ??  contentDataRes.data ?? null;
-              } catch(e) {
+                content[content.api] = contentDataRes.data.data ?? contentDataRes.data ?? null;
+              } catch (e) {
                 console.log(e);
               }
             }
           }
         }
-        
+
         resolve(parsedData);
       } else {
         resolve({});
       }
-    }).catch(err => {
+    } catch (err) {
       reject(err);
-    });
+    };
   });
 }
