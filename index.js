@@ -165,11 +165,12 @@ export const getPageConfig = (params = {}) => {
           // This is the case get list page name
           resolve(res.data);
         }
-        const keys = ['layout', 'content', 'seo', 'theme'];
+        const arrayContent = ['content', 'submenu']
+        const keys = [...arrayContent, 'layout', 'seo', 'theme'];
         let parsedData = { name: res.data.name };
 
         keys.forEach(key => {
-          parsedData[key] = parseJson(res.data[key]) || (key === 'content' ? [] : {});
+          parsedData[key] = parseJson(res.data[key]) || (arrayContent.includes(key) ? [] : {});
         });
 
         if (Array.isArray(parsedData.content)) {
