@@ -160,20 +160,27 @@ export const getPageConfig = (params = {}) => {
     try {
       const res = await APIService.get(`page${makeQueryParamsFromObject(_params)}`);
       if (res && res.data) {
+        const data = res.data;
         if (!_params.name) {
           // This is the case get list page name
-          resolve(res.data);
+          resolve(data);
         }
-        const arrayContent = ['content', 'submenu']
-        const keys = [...arrayContent, 'layout', 'seo', 'theme'];
-        let parsedData = { name: res.data.name };
+
+        const keys = Object.keys(data);
+        let parsedData = {};
 
         keys.forEach(key => {
-          parsedData[key] = parseJson(res.data[key]) || (arrayContent.includes(key) ? [] : {});
+          let value = data[key];
+          if (typeof value === "string" && ["{", "["].includes(value[0])) {
+            value = parseJson(value);
+          }
+          parsedData[key] = value;
         });
 
-        if (Array.isArray(parsedData.content)) {
-          const length = parsedData.content.length;
+        const contentValue = parsedData.content;
+
+        if (Array.isArray(contentValue)) {
+          const length = contentValue.length;
           for (let i = 0; i < length; i++) {
             const content = parsedData.content[i];
             if (content.api) {
