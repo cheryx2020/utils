@@ -135,7 +135,7 @@ export const getListTips = (params = {}) => {
   return new Promise(async (resolve, reject) => {
     await APIService.get(`list-post${makeQueryParamsFromObject(params)}`).then(res => {
       if (res && res.data && res.data.data && res.data.data) {
-        resolve(res.data.data.filter(item => item.id != 'tu-hoc-dan-co-ban').map(item => { return { ...item, imgUrl: item.imgUrl || '/images/tips.png' } }));
+        resolve(res.data.data.map(item => { return { ...item, imgUrl: item.imgUrl || '/images/tips.png' } }));
       }
     }).catch(err => {
       reject(err);
