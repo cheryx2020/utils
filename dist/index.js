@@ -108,11 +108,26 @@ const readFile = (file) => {
   });
 };
 /**
- * 
- * @param {*} file 
- * @param {*} localPath if exist, the file will be saved to local path
+ * Uploads a file to the server using a POST request with FormData.
+ *
+ * @param {File} file - The file object to upload (from input type="file").
+ * @param {string} [localPath] - Optional local path to store the uploaded file on the server.
+ * @param {boolean} [hideAlert=false] - If true, suppresses the success alert.
+ * @param {string} [fileName] - Optional custom name to assign to the uploaded file.
+ * @param {boolean} [requestAbsoluteUrlResponse=false] - If true, requests the server to return the absolute URL.
+ * @param {string} [oldFile] - Optional - The file will be replaced by the new file
+ * @returns {Promise<string>} A Promise that resolves to the uploaded file URL or path, or rejects with an error message.
+ *
+ * @example
+ * uploadFile(file, 'uploads/images', false, 'myphoto.jpg', true)
+ *   .then(url => {
+ *     console.log('File uploaded:', url);
+ *   })
+ *   .catch(err => {
+ *     console.error('Upload failed:', err);
+ *   });
  */
-const uploadFile = (file, localPath, hideAlert, fileName, requestAbsoluteUrlResponse) => {
+const uploadFile = (file, localPath, hideAlert, fileName, requestAbsoluteUrlResponse, oldFilePath) => {
   const bodyFormData = new FormData();
   bodyFormData.set('file', file);
   if (localPath) {
@@ -123,6 +138,9 @@ const uploadFile = (file, localPath, hideAlert, fileName, requestAbsoluteUrlResp
   }
   if (requestAbsoluteUrlResponse) {
     bodyFormData.set('requestAbsoluteUrlResponse', requestAbsoluteUrlResponse);
+  }
+  if (oldFilePath) {
+    bodyFormData.set('oldFilePath', oldFilePath);
   }
   return new Promise((resolve, reject) => {
     APIService.post('upload-file', bodyFormData, {

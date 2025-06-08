@@ -21,7 +21,7 @@
   "author": "Vinh Nguyen",
   "license": "MIT",
   "dependencies": {
-    "@cheryx2020/api-service": "^1.0.8",
+    "@cheryx2020/api-service": "^1.0.20",
     "public-ip": "^5.0.0"
   },
   "bugs": {
