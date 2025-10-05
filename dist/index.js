@@ -284,5 +284,26 @@ const getPageConfig = (params = {}) => {
       reject(err);
     }  });
 };
+const getPublishPageNames = (params = {}) => {
+  const _params = { ...params };
+  if (!_params.domain) {
+    _params.domain = getDomain();
+  }
 
-export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getDomain, getListTips, getPageConfig, getValueObjectByPath, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await APIService.get(`page/published-pages${makeQueryParamsFromObject(_params)}`);
+      
+      if (res && res.data) {
+        resolve(res.data);
+      } else {
+        resolve([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch published page names:", err);
+      resolve([]);
+    }
+  });
+};
+
+export { POST_ITEM_TYPE, SLACK_CHANNELS, deleteFile, getDescriptionFromContent, getDomain, getListTips, getPageConfig, getPublishPageNames, getValueObjectByPath, isBigFile, isMobileDevice, readFile, removeAccents, sendSlackMessage, transformImageSrc, uploadFile, verifyToken };

@@ -221,3 +221,24 @@ export const getPageConfig = (params = {}) => {
     };
   });
 }
+export const getPublishPageNames = (params = {}) => {
+  const _params = { ...params };
+  if (!_params.domain) {
+    _params.domain = getDomain();
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await APIService.get(`page/published-pages${makeQueryParamsFromObject(_params)}`);
+      
+      if (res && res.data) {
+        resolve(res.data);
+      } else {
+        resolve([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch published page names:", err);
+      resolve([]);
+    }
+  });
+};
