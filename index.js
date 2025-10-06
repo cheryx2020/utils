@@ -174,6 +174,9 @@ export const getPageConfig = (params = {}) => {
   if (!_params.domain) {
     _params.domain = getDomain();
   }
+  if (!_params.language) {
+    _params.language = process.env.NEXT_PUBLIC_language || 'en'
+  }
   return new Promise(async (resolve, reject) => {
     try {
       const res = await APIService.get(`page${makeQueryParamsFromObject(_params)}`);
